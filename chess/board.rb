@@ -2,6 +2,8 @@ require_relative 'piece.rb'
 
 class Board
 
+  #attr_reader :grid
+
   def initialize
     @grid = Array.new(8) { Array.new(8) }
     [[0, 0], [7, 7], [0, 7], [7, 0]].each do |pos|
@@ -44,11 +46,18 @@ class Board
   end
 
   def move_piece(start_pos, end_pos)
+    raise "Error: no piece located at #{start_pos}." if self[start_pos].nil?
+    raise "Error: invalid destination for piece." unless valid_pos?(end_pos)
     piece = self[start_pos]
     self[start_pos] = nil
     self[end_pos] = piece
   end
 
+  def valid_pos?(pos)
+    return false if pos.length > 2
+    return false if pos.any? { |el| el > 7 || el < 0 }
+    true
+  end
 
 
 
