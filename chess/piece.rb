@@ -1,5 +1,6 @@
 require 'colorize'
 require 'byebug'
+require_relative 'modules.rb'
 
 class Piece
   def initialize
@@ -14,8 +15,8 @@ class Piece
     @color = :b
   end
 
-  def moves
-  end
+  # def moves
+  # end
 
   def to_s
     if @color == :w
@@ -57,9 +58,10 @@ class Queen < Piece
 end
 
 class King < Piece
-  #include SteppingPiece
+  include SteppingPiece
   def initialize
     @symbol = 'K'
+    @move_type = [:single]
   end
 end
 
@@ -76,6 +78,7 @@ class Knight < Piece
   #include SteppingPiece
   def initialize
     @symbol = 'N'
+    @move_type = [:hop]
   end
 end
 
@@ -97,18 +100,4 @@ end
 
 class NullPiece
   #include Singleton
-end
-
-
-module Singleton
-end
-
-module SteppingPiece
-end
-
-module SlidingPiece
-
-  def specific_move(move_type)
-    case move_type
-
 end

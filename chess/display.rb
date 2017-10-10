@@ -46,6 +46,6 @@ class Display
 
 end
 
-x = Board.new
-d = Display.new(x)
-d.looper
+# x = Board.new
+# d = Display.new(x)
+# d.looper
