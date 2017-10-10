@@ -15,12 +15,11 @@ class Game
 
   def play
     loop do #until @board.checkmate?
-      @display.render
+      system("clear")
       move = get_move_from_player
       if @board[move[0]].moves(move[0]).include?(move[1])
         @board.move_piece(move[0], move[1])
         @board[move[0]] = NullPiece.instance
-        @display.render
         self.switch_player
       end
     end
@@ -39,6 +38,7 @@ class Game
       if pos && @board[pos].color == @active_player.color
         #byebug
         start_pos = pos.dup
+        system("clear")
         break
       end
       system("clear")
@@ -50,6 +50,7 @@ class Game
       if pos
         #byebug
         end_pos = pos.dup
+        system("clear")
         break
       end
       system("clear")
