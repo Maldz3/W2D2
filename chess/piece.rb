@@ -97,6 +97,8 @@ class Bishop < Piece
 end
 
 class Pawn < Piece
+
+  attr_accessor :moved_before
   def initialize(pos, board)
     @symbol = 'p'
     @moved_before = false

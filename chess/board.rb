@@ -59,6 +59,7 @@ class Board
     raise "Error: no piece located at #{start_pos}." if self[start_pos].nil?
     raise "Error: invalid destination for piece." unless valid_pos?(end_pos)
     piece = self[start_pos]
+    piece.moved_before = true if piece.is_a?(Pawn)
     self[start_pos] = nil
     self[end_pos] = piece
   end
