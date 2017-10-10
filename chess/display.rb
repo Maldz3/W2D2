@@ -17,9 +17,15 @@ class Display
       display_i -= 1
       8.times do |column_i|
         if [row_i, column_i] == @cursor.cursor_pos
-          str << "X |".colorize(:blue)
+          if @board[[row_i, column_i]].nil?
+            str << "_ ".colorize(:blue) + "|"
+          else
+            str << "#{@board[[row_i, column_i]]} ".colorize(:blue) + "|"
+          end
+        elsif @board[[row_i, column_i]].nil?
+          str << "_ |" #@board[row_idx, column_idx]
         else
-          str << "X |" #@board[row_idx, column_idx]
+          str << "#{@board[[row_i, column_i]]} |" #@board[row_idx, column_idx]
         end
       end
       str << "\n"
@@ -34,6 +40,7 @@ class Display
     while true
       self.render
       @cursor.get_input
+      system("clear")
     end
   end
 

@@ -78,10 +78,18 @@ class Cursor
 
   def handle_key(key)
     case key
-    when :return || :space
+    when :return
       @cursor_pos
-    when :left || :right || :up || :down
-      update_pos(key)
+    when :space
+      @cursor_pos
+    when :left
+      update_pos(:left)
+    when :right
+      update_pos(:right)
+    when :up
+      update_pos(:up)
+    when :down
+      update_pos(:down)
     when :ctrl_c
       Process.exit(0)
     end
@@ -89,18 +97,16 @@ class Cursor
 
   def update_pos(diff)
     #byebug
-    MOVES[diff] = shift_value
+    shift_value = MOVES[diff]
     new_x = @cursor_pos[0] + shift_value[0]
-    @cursor_pos[0] += shift_value[0] if new_x < 8 && new_x >= 0
+    @cursor_pos[0] = new_x if in_bounds?(new_x)
     new_y = @cursor_pos[1] + shift_value[1]
-    @cursor_pos[1] += shift_value[1] if new_y < 8 && new_y >= 0
+    @cursor_pos[1] = new_y if in_bounds?(new_y)
+    #byebug
     @cursor_pos
   end
 
-  def valid_pos?(pos)
-    return false if pos.length > 2
-    return false if pos.any? { |el| el > 7 || el < 0 }
-    true
+  def in_bounds?(pos)
+    pos < 8 && pos >= 0
   end
-
 end
