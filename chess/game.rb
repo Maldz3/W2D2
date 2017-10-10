@@ -20,13 +20,14 @@ class Game
       if @board[move[0]].moves(move[0]).include?(move[1])
         @board.move_piece(move[0], move[1])
         @board[move[0]] = NullPiece.instance
-        self.switch_player
+        switch_player
+        #byebug
       end
     end
   end
 
   def switch_player
-    @active_player == @player1 ? @player2 : @player1
+    @active_player == @player1 ? @active_player = @player2 : @active_player = @player1
   end
 
   def get_move_from_player

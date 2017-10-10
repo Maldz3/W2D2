@@ -110,10 +110,10 @@ class Pawn < Piece
     if !@moved_before ################ to do
       if @color == :b
         array << [pos[0] + 1, pos[1]]
-        array << [pos[0] + 2, pos[1]]
+        array << [pos[0] + 2, pos[1]] if @board[[pos[0] + 1, pos[1]]].is_a?(NullPiece)
       else
         array << [pos[0] - 1, pos[1]]
-        array << [pos[0] - 2, pos[1]]
+        array << [pos[0] - 2, pos[1]] if @board[[pos[0] - 1, pos[1]]].is_a?(NullPiece)
       end
     else
       if @color == :b
@@ -132,7 +132,7 @@ class Pawn < Piece
       attack_array << [pos[0] - 1, pos[1] - 1]
     end
     attack_array.reject! { |move| @board[move].color == self.color || @board[move].color == nil}
-    array.concat(attack_array)
+    array.concat(attack_array).select { |pos| pos.all? { |coord| coord >= 0 && coord < 8 } }
   end
 
 end
