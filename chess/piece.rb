@@ -3,8 +3,13 @@ require 'byebug'
 require_relative 'modules.rb'
 
 class Piece
-  def initialize
+
+  attr_reader :color
+
+  def initialize(pos, board)
     @color = nil
+    @position = pos
+    @board = board
   end
 
   def set_white
@@ -14,9 +19,6 @@ class Piece
   def set_black
     @color = :b
   end
-
-  # def moves
-  # end
 
   def to_s
     if @color == :w
@@ -48,8 +50,8 @@ end
 
 
 class Queen < Piece
-  #include SlidingPiece
-  def initialize
+  include SlidingPiece
+  def initialize(pos, board)
     @symbol = 'Q'
     @move_type = [:diagonal, :horizontal]
     super
@@ -59,15 +61,16 @@ end
 
 class King < Piece
   include SteppingPiece
-  def initialize
+  def initialize(pos, board)
     @symbol = 'K'
     @move_type = [:single]
+    super
   end
 end
 
 class Rook < Piece
-  #include SlidingPiece
-  def initialize
+  include SlidingPiece
+  def initialize(pos, board)
     @move_type = [:horizontal]
     @symbol = "R"
     super
@@ -75,16 +78,17 @@ class Rook < Piece
 end
 
 class Knight < Piece
-  #include SteppingPiece
-  def initialize
+  include SteppingPiece
+  def initialize(pos, board)
     @symbol = 'N'
     @move_type = [:hop]
+    super
   end
 end
 
 class Bishop < Piece
-  #include SlidingPiece
-  def initialize
+  include SlidingPiece
+  def initialize(pos, board)
     @move_type = [:diagonal]
     @symbol = 'B'
     super
@@ -92,12 +96,34 @@ class Bishop < Piece
 end
 
 class Pawn < Piece
-  def initialize
+  def initialize(pos, board)
     @symbol = 'p'
+    @moved_before = false
+    super
+  end
+
+  def moves
+    array =[]
+    if !@moved_before
+      if @color == :b
+        array << [pos[0] + 1, pos[1]]
+        array << [pos[0] + 2, pos[1]]
+      else
+        array << [pos[0] - 1, pos[1]]
+        array << [pos[0] - 2, pos[1]]
+      end
+    else
+      if @color == :b
+        array << [pos[0] + 1, pos[1]]
+      else
+        array << [pos[0] - 1, pos[1]]
+      end
+    end
+    #diagonal moves if opposite color piece
   end
 
 end
 
-class NullPiece
+class NullPiece < Piece
   #include Singleton
 end

@@ -6,28 +6,32 @@ class Board
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
+    populate
+  end
+
+  def populate
     [[0, 0], [7, 7], [0, 7], [7, 0]].each do |pos|
-      self[pos] = Rook.new #rooks
+      self[pos] = Rook.new(pos, self) #rooks
     end
     [[0, 1], [0, 6], [7, 1], [7, 6]].each do |pos|
-      self[pos] = Knight.new #knights
+      self[pos] = Knight.new(pos, self) #knights
     end
     [[0, 2], [0, 5], [7, 2], [7, 5]].each do |pos|
-      self[pos] = Bishop.new #bishops
+      self[pos] = Bishop.new(pos, self) #bishops
     end
-    [[0, 3], [7, 3]].each do |pos|
-      self[pos] = Queen.new #queens
+    [[0, 3], [7, 3]].each do |pos| #[7, 3]
+      self[pos] = Queen.new(pos, self) #queens
     end
     [[0, 4], [7, 4]].each do |pos|
-      self[pos] = King.new #kings
+      self[pos] = King.new(pos, self) #kings
     end
     i = 0
     while i < 8
-      self[[1, i]] = Pawn.new #pawns
-      self[[6, i]] = Pawn.new #pawns
+      self[[1, i]] = Pawn.new([1, i], self) #pawns
+      self[[6, i]] = Pawn.new([6, i], self) #pawns
       i2 = 2
       while i2 < 6
-        self[[i2, i]] = nil #nullpieces
+        self[[i2, i]] = NullPiece.new([i2, i], self) #nullpieces
         i2 += 1
       end
       i += 1
@@ -39,7 +43,6 @@ class Board
         @grid[row].each { |piece| piece.set_white }
       end
     end
-
   end
 
   def [](pos)

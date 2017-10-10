@@ -36,13 +36,13 @@ class Display
     puts str
   end
 
-  def looper
-    while true
-      self.render
-      @cursor.get_input
-      system("clear")
-    end
-  end
+  # def looper
+  #   while true
+  #     self.render
+  #     @cursor.get_input
+  #     system("clear")
+  #   end
+  # end
 
 end
 
