@@ -1,12 +1,13 @@
 require 'colorize'
 require 'byebug'
 require_relative 'modules.rb'
+require 'singleton'
 
 class Piece
 
   attr_reader :color
 
-  def initialize(pos, board)
+  def initialize(pos = nil, board = nil)
     @color = nil
     @position = pos
     @board = board
@@ -102,9 +103,9 @@ class Pawn < Piece
     super
   end
 
-  def moves
+  def moves(pos)
     array =[]
-    if !@moved_before
+    if !@moved_before ################ to do
       if @color == :b
         array << [pos[0] + 1, pos[1]]
         array << [pos[0] + 2, pos[1]]
@@ -119,11 +120,25 @@ class Pawn < Piece
         array << [pos[0] - 1, pos[1]]
       end
     end
-    #diagonal moves if opposite color piece
+    array.reject! { |move| @board[move].color == :w || @board[move].color == :b } ######### to do
+    attack_array = []
+    if @color == :b
+      attack_array << [pos[0] + 1, pos[1] + 1]
+      attack_array << [pos[0] + 1, pos[1] - 1]
+    else
+      attack_array << [pos[0] - 1, pos[1] + 1]
+      attack_array << [pos[0] - 1, pos[1] - 1]
+    end
+    attack_array.reject! { |move| @board[move].color == self.color || @board[move].color == nil}
+    array.concat(attack_array)
   end
 
 end
 
 class NullPiece < Piece
-  #include Singleton
+  include Singleton
+
+  def to_s
+    "_"
+  end
 end

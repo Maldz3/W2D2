@@ -6,10 +6,10 @@ class Board
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
-    populate
+    make_starting_grid
   end
 
-  def populate
+  def make_starting_grid
     [[0, 0], [7, 7], [0, 7], [7, 0]].each do |pos|
       self[pos] = Rook.new(pos, self) #rooks
     end
@@ -31,7 +31,7 @@ class Board
       self[[6, i]] = Pawn.new([6, i], self) #pawns
       i2 = 2
       while i2 < 6
-        self[[i2, i]] = NullPiece.new([i2, i], self) #nullpieces
+        self[[i2, i]] = NullPiece.instance #nullpieces
         i2 += 1
       end
       i += 1

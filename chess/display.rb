@@ -3,6 +3,9 @@ require_relative 'cursor.rb'
 require 'colorize'
 
 class Display
+
+  attr_reader :cursor
+
   def initialize (board)
     @board = board
     @cursor = Cursor.new([0,0], board)
@@ -36,13 +39,7 @@ class Display
     puts str
   end
 
-  # def looper
-  #   while true
-  #     self.render
-  #     @cursor.get_input
-  #     system("clear")
-  #   end
-  # end
+
 
 end
 

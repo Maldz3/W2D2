@@ -84,12 +84,16 @@ class Cursor
       @cursor_pos
     when :left
       update_pos(:left)
+      nil
     when :right
       update_pos(:right)
+      nil
     when :up
       update_pos(:up)
+      nil
     when :down
       update_pos(:down)
+      nil
     when :ctrl_c
       Process.exit(0)
     end

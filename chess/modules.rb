@@ -1,13 +1,12 @@
 require 'byebug'
 
-module Singleton
-end
+
 
 module SteppingPiece
 
-  def moves(start_position, move_type)
+  def moves(start_position, move_types = @move_type)
     potential_moves = []
-    if move_type == :single
+    if move_types.include?(:single)
       x_shift = (-1..1).to_a
       y_shift = (-1..1).to_a
       x_shift.each do |x|
@@ -17,7 +16,7 @@ module SteppingPiece
           end
         end
       end
-    elsif move_type == :hop
+    elsif move_types.include?(:hop)
       knight_moves = [
       [-2, -1],
       [-2,  1],
