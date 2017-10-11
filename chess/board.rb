@@ -1,12 +1,12 @@
 require_relative 'piece.rb'
+require 'byebug'
 
 class Board
-
-  #attr_reader :grid
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
     make_starting_grid
+    @king_locations = { w: [7, 4], b: [0, 4] }
   end
 
   def make_starting_grid
@@ -62,6 +62,8 @@ class Board
     piece.moved_before = true if piece.is_a?(Pawn)
     self[start_pos] = nil
     self[end_pos] = piece
+    self[end_pos].set_position(end_pos)
+    @king_locations[piece.color] = end_pos if piece.is_a?(King)
   end
 
   def valid_pos?(pos)
@@ -70,8 +72,18 @@ class Board
     true
   end
 
-
-
-
+  def in_check?(color)
+    king_pos = @king_locations[color]
+    @grid.each_with_index do |row,idx|
+      row.each_with_index do |piece, idx2|
+        if !piece.is_a?(NullPiece) && piece.color != color
+          if piece.moves([idx, idx2]).include?(king_pos)
+            return true
+          end
+        end
+      end
+    end
+    false
+  end
 
 end

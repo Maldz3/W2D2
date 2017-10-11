@@ -13,6 +13,10 @@ class Piece
     @board = board
   end
 
+  def set_position(pos)
+    @position = pos
+  end
+
   def set_white
     @color = :w
   end
@@ -102,10 +106,11 @@ class Pawn < Piece
   def initialize(pos, board)
     @symbol = 'p'
     @moved_before = false
+    @move_type = :weird
     super
   end
 
-  def moves(pos)
+  def moves(pos, move_types = @move_type)
     array =[]
     if !@moved_before ################ to do
       if @color == :b
@@ -131,6 +136,7 @@ class Pawn < Piece
       attack_array << [pos[0] - 1, pos[1] + 1]
       attack_array << [pos[0] - 1, pos[1] - 1]
     end
+    attack_array.reject! { |pos| pos.any? { |coord| coord < 0 || coord >= 8 } }
     attack_array.reject! { |move| @board[move].color == self.color || @board[move].color == nil}
     array.concat(attack_array).select { |pos| pos.all? { |coord| coord >= 0 && coord < 8 } }
   end
@@ -142,5 +148,9 @@ class NullPiece < Piece
 
   def to_s
     "_"
+  end
+
+  def moves(position, type = nil)
+    []
   end
 end

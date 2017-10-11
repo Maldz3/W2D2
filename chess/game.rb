@@ -11,16 +11,23 @@ class Game
     @player1 = Player.new(player1, :w)
     @player2 = Player.new(player2, :b)
     @active_player = @player1
+    @check = false
   end
 
   def play
     loop do #until @board.checkmate?
       system("clear")
+      puts "CHECK!" if @check
       move = get_move_from_player
       if @board[move[0]].moves(move[0]).include?(move[1])
         @board.move_piece(move[0], move[1])
         @board[move[0]] = NullPiece.instance
         switch_player
+        if @board.in_check?(@active_player.color)
+          @check = true
+        else
+          @check = false
+        end
         #byebug
       end
     end
@@ -34,6 +41,7 @@ class Game
     start_pos = nil
     end_pos = nil
     loop do
+      puts "#{@active_player.name}: pick piece to move"
       @display.render
       pos = @display.cursor.get_input
       if pos && @board[pos].color == @active_player.color
@@ -46,6 +54,7 @@ class Game
     end
     #byebug
     loop do
+      puts "#{@active_player.name}: pick location to move to"
       @display.render
       pos = @display.cursor.get_input
       if pos
