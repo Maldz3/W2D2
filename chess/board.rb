@@ -88,4 +88,16 @@ class Board
     false
   end
 
+  # def deep_dup
+  #   new_board = []
+  #   array.each do |el|
+  #     if el.is_a?(Array)
+  #       new_board << el.dup
+  #     else
+  #       new_board << el
+  #     end
+  #   end
+  #   new_board
+  # end
+
 end
