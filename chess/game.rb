@@ -19,7 +19,7 @@ class Game
       system("clear")
       puts "CHECK!" if @check
       move = get_move_from_player
-      if @board[move[0]].moves(move[0]).include?(move[1])
+      if @board[move[0]].moves(move[0]).include?(move[1]) #&& !move_into_check?(move[0], move[1])
         @board.move_piece(move[0], move[1])
         @board[move[0]] = NullPiece.instance
         switch_player
@@ -67,6 +67,22 @@ class Game
     end
     #byebug
     [start_pos, end_pos]
+  end
+
+  def move_into_check?(start, endpoint)
+    #copy_board = @board.deep_dup
+    copy_board.move_piece(start, endpoint)
+    copy_board[start] = NullPiece.instance
+    check_color = nil
+    if @active_player.color == :w
+      check_color = :b
+    else
+      check_color = :w
+    end
+    if @board.in_check?(check_color)
+      return true
+    end
+    false
   end
 
 end
